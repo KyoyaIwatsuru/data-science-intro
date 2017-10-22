@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# data
+#data/input  # commented out for the hands on.
+data/working/*
+data/output/*
+
+!.gitkeep

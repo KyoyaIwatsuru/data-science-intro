@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-import matplotlib.mlab as mlab
+from scipy.stats import multivariate_normal
 import matplotlib.cm as cm
 
 
@@ -41,7 +41,8 @@ def detectFixations(
                 else:
                     c = 0
                 j += 1
-            fixations.append([begin, np.mean(X_), np.mean(Y_), times[min([j, len(times)-1])] - begin])
+            i = i - 1
+            fixations.append([begin, np.mean(X_), np.mean(Y_), times[min([i, len(times)-1])] - begin])
         i += 1
     return np.array(fixations)
 
@@ -85,7 +86,13 @@ def plotHeatmap(
     gx, gy = np.meshgrid(np.arange(0, len(img[0])), np.arange(0, len(img)))
     values = np.zeros((len(img), len(img[0])))
     for i in range(len(X)):
-        values += mlab.bivariate_normal(gx, gy, 50, 50, X[i], Y[i])*durations[i]/2.0
+        # 設定された分散値を50に固定
+        covariance = np.eye(2) * 50
+        # 2次元の多変量正規分布を作成
+        mv_normal = multivariate_normal(mean=[X[i], Y[i]], cov=covariance)
+        # 密度関数を計算し、durationで重み付け
+        density = mv_normal.pdf(np.dstack((gx, gy)))
+        values += density * durations[i] / 2.0
     values = values/np.max(values)
 
     masked = np.ma.masked_where(values < 0.05, values)

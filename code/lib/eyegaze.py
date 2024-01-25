@@ -13,10 +13,10 @@ def isMinimumFixation(X, Y, mfx):
 
 
 def detectFixations(
-    times, X, Y, P,
-    min_concat_gaze_count=9,
-    min_fixation_size=50,
-    max_fixation_size=80):
+  times, X, Y, P,
+  min_concat_gaze_count=9,
+  min_fixation_size=50,
+  max_fixation_size=80):
 
   fixations = []
   i = 0
@@ -63,7 +63,7 @@ def detectFixations(
       delta_t = 1.0
 
     lengths.append(math.sqrt(delta_x * delta_x + delta_y * delta_y))
-    angles.append(math.atan2(delta_y, delta_x))
+    angles.append(math.degrees(math.atan2(delta_y, delta_x)))
     durations.append(delta_t)
 
   saccades = np.vstack((lengths, angles, np.array(lengths) / np.array(durations))).T

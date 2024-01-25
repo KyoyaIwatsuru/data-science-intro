@@ -9,6 +9,7 @@ __pycache__/
 
 # data
 #data/input  # commented out for the hands on.
+data/*
 data/working/*
 data/output/*
 
